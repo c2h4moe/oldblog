@@ -11,7 +11,7 @@
   
   <title>
     
-      Hello World 
+      洛谷P1131:时态同步 
       
       
       |
@@ -151,58 +151,101 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Hello World</div>
+      <div class="post-title">洛谷P1131:时态同步</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2023-07-13 14:37:35
+          2023-07-16 10:09:05
         </span>
         
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%B4%9B%E8%B0%B7/" title="洛谷">
+                    #洛谷
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
       <div class="markdown-body">
-        <h3
-id="测试一下代码数学公式图片功能">测试一下代码/数学公式/图片功能</h3>
-<h4 id="代码">代码</h4>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    cout&lt;&lt;a+b&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="数学公式">数学公式</h4>
-<p><span class="math inline">\(\lceil x/2 \rceil \leq 3\)</span></p>
-<p><span class="math display">\[\epsilon_0 = 6.022 \cdot
-10^{-19}\]</span> <span class="math display">\[
-sgn(x)=\begin{cases}
--1 &amp;x&lt;0 \\
-0 &amp;x=0 \\
-1 &amp;x&gt;0
-\end{cases}
-\]</span></p>
-<p><span class="math display">\[
-\binom{n}{m} = C_n^m = \frac{n!}{m!(n-m)!}
-\]</span></p>
-<p><span class="math display">\[
-\infty
-\lim_{n\rightarrow+\infty}\frac{1}{n} = 0
-\]</span></p>
-<h4 id="图片">图片</h4>
-<p><img src="74805406_p9_master1200.jpg" alt="74805406_p9_master1200" style="zoom:50%;" /></p>
+        <h3 id="题意">题意</h3>
+<p>给定一棵树和一个节点，求最少需要多少次操作才能使该节点到任意其它叶子结点的路径相同。</p>
+<p><span
+class="math inline">\(\dagger\)</span>一次操作指选定一条边，使其边权加1</p>
+<h3 id="输入">输入</h3>
+<p>第一行包含一个正整数 <span
+class="math inline">\(N\)</span>，表示节点的个数。</p>
+<p>第二行包含一个整数 <span
+class="math inline">\(S\)</span>，为激发器（即源点）的编号。</p>
+<p>接下来 <span class="math inline">\(N−1\)</span> 行，每行三个整数<span
+class="math inline">\(a,b,t\)</span>。表示该条边连接节点 <span
+class="math inline">\(a\)</span> 与节点 <span
+class="math inline">\(b\)</span>，且边权为 <span
+class="math inline">\(t\)</span> 。</p>
+<p><span class="math inline">\(1\leq N \leq 5×10^5\)</span></p>
+<p><span class="math inline">\(1 \leq t\leq10^6\)</span>。</p>
+<h3 id="输出">输出</h3>
+<p>仅包含一个整数 <span
+class="math inline">\(V\)</span>，为最少操作次数。</p>
+<h3 id="题解">题解</h3>
+<p>一道不错的搜索题</p>
+<p>我们把一个点的<span
+class="math inline">\(dist\)</span>定义为该节点到其它叶子节点的距离的集合</p>
+<p>那么最终想要达到的距离值即为初始时给定点S的<span
+class="math inline">\(dist\)</span>的最大值</p>
+<p>我们希望一次操作能够尽可能改动给定点更多的<span
+class="math inline">\(dist\)</span></p>
+<p>即：如果两条边在S到一个叶子节点的路径上，那么先增加靠近S的边的边权是更好的，并且要尽可能多增加它</p>
+<p>最多可以增加多少呢?设该边连接了<span
+class="math inline">\(u\)</span>和<span
+class="math inline">\(v(u\rightarrow v)\)</span>，那么最多可增加 <span
+class="math display">\[
+max(dist(u))-max(dist(v))-w[u,v](边权);
+\]</span>
+观察到这是一种类似于贪心的思路，不过发现这种方法从路径上游往下游依次改动和从下游往上游改动没有区别</p>
+<p>反过来就是dp的思想，设<span
+class="math inline">\(f_i\)</span>为以<span
+class="math inline">\(i\)</span>点为起点，使<span
+class="math inline">\(i\)</span>点到它所管辖的所有叶子节点距离相同需要的最小操作数</p>
+<p>那么状态转移方程即为 <span class="math display">\[
+f[u]=\sum_{(u,v)\in E}{max(dist(u))-max(dist(v))-w[u,v]+f_v}
+\]</span> 按照这样的过程从S开始搜索就OK了</p>
+<h3 id="代码">代码</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">using</span> i64 = <span class="type">long</span> <span class="type">long</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="built_in">Edge</span>()&#123;</span><br><span class="line">        u=v=next=<span class="number">-1</span>;</span><br><span class="line">        w=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> u,v,w,next;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> N,S;</span><br><span class="line">    cin&gt;&gt;N&gt;&gt;S;</span><br><span class="line">    S--;</span><br><span class="line">    <span class="function">vector&lt;Edge&gt; <span class="title">e</span><span class="params">(<span class="number">2</span>*N<span class="number">-2</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">head</span><span class="params">(N,<span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;N<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="type">int</span> a,b,c;</span><br><span class="line">        cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">        a--;b--;</span><br><span class="line">        e[<span class="number">2</span>*i].u=e[<span class="number">2</span>*i+<span class="number">1</span>].v=a;</span><br><span class="line">        e[<span class="number">2</span>*i].v=e[<span class="number">2</span>*i+<span class="number">1</span>].u=b;</span><br><span class="line">        e[<span class="number">2</span>*i].w=e[<span class="number">2</span>*i+<span class="number">1</span>].w=c;</span><br><span class="line">        e[<span class="number">2</span>*i].next=head[a];</span><br><span class="line">        head[a]=<span class="number">2</span>*i;</span><br><span class="line">        e[<span class="number">2</span>*i+<span class="number">1</span>].next=head[b];</span><br><span class="line">        head[b]=<span class="number">2</span>*i+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">vector&lt;i64&gt; <span class="title">dist</span><span class="params">(N,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">visited</span><span class="params">(N,<span class="number">0</span>)</span></span>;</span><br><span class="line">    function&lt;i64(<span class="type">int</span>)&gt; dfs=[&amp;](<span class="type">int</span> x)&#123;</span><br><span class="line">        visited[x]=<span class="number">1</span>;</span><br><span class="line">        i64 mx=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[x];i!=<span class="number">-1</span>;i=e[i].next)&#123;</span><br><span class="line">            <span class="type">int</span> v=e[i].v;</span><br><span class="line">            <span class="keyword">if</span>(!visited[v])&#123;</span><br><span class="line">                mx=<span class="built_in">max</span>(mx,<span class="built_in">dfs</span>(v)+e[i].w);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        dist[x]=mx;</span><br><span class="line">        <span class="keyword">return</span> mx;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">dfs</span>(S);</span><br><span class="line">    i64 ans=<span class="number">0</span>;</span><br><span class="line">    visited.<span class="built_in">assign</span>(N,<span class="number">0</span>);</span><br><span class="line">    dfs=[&amp;](<span class="type">int</span> x)&#123;</span><br><span class="line">        visited[x]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[x];i!=<span class="number">-1</span>;i=e[i].next)&#123;</span><br><span class="line">            <span class="type">int</span> v=e[i].v;</span><br><span class="line">            <span class="keyword">if</span>(!visited[v])&#123;</span><br><span class="line">                ans+=dist[x]-dist[v]-e[i].w;</span><br><span class="line">                <span class="built_in">dfs</span>(v);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">dfs</span>(S);</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
+              <a href="/2023/07/12/Hello-World/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
           </div>
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2023-07-13 14:37:35
+              2023-07-16 10:09:05
             </span>
             
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%B4%9B%E8%B0%B7/" title="洛谷">
+                        #洛谷
+                      </a>
+                    </span>
+                    
+                  </span>
+              
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2023/07/15/%E6%B4%9B%E8%B0%B7P1131-%E6%97%B6%E6%80%81%E5%90%8C%E6%AD%A5/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -216,7 +259,7 @@ sgn(x)=\begin{cases}
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B%E4%BB%A3%E7%A0%81%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E5%9B%BE%E7%89%87%E5%8A%9F%E8%83%BD"><span class="toc-text">测试一下代码&#x2F;数学公式&#x2F;图片功能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F"><span class="toc-text">数学公式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E7%89%87"><span class="toc-text">图片</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E6%84%8F"><span class="toc-text">题意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5"><span class="toc-text">输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA"><span class="toc-text">输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3"><span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li></ol>
       
     </div>
   </div>
@@ -502,12 +545,12 @@ sgn(x)=\begin{cases}
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Hello%20World + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F12%2FHello-World%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%B4%9B%E8%B0%B7P1131%3A%E6%97%B6%E6%80%81%E5%90%8C%E6%AD%A5 + '&url=' + http%3A%2F%2Fexample.com%2F2023%2F07%2F15%2F%25E6%25B4%259B%25E8%25B0%25B7P1131-%25E6%2597%25B6%25E6%2580%2581%25E5%2590%258C%25E6%25AD%25A5%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/12/Hello-World/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2023/07/15/%E6%B4%9B%E8%B0%B7P1131-%E6%97%B6%E6%80%81%E5%90%8C%E6%AD%A5/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
